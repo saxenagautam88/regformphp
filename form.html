@@ -1,0 +1,148 @@
+<!DOCTYPE html>  
+<html>  
+<head>  
+<style>  
+.error {color: #FF0001;}  
+</style>  
+</head>  
+<body>    
+  
+<?php  
+// define variables to empty values  
+$nameErr = $emailErr = $mobilenoErr = $genderErr = $websiteErr = $dob = $Designation = $agreeErr = "";  
+$name = $email = $mobileno = $gender = $website = $agree = "";  
+  
+//Input fields validation  
+if ($_SERVER["REQUEST_METHOD"] == "POST") {  
+      
+//String Validation  
+    if (emptyempty($_POST["name"])) {  
+         $nameErr = "Name is required";  
+    } else {  
+        $name = input_data($_POST["name"]);  
+            // check if name only contains letters and whitespace  
+            if (!preg_match("/^[a-zA-Z ]*$/",$name)) {  
+                $nameErr = "Only alphabets and white space are allowed";  
+            }  
+    }  
+      
+    //Email Validation   
+    if (emptyempty($_POST["email"])) {  
+            $emailErr = "Email is required";  
+    } else {  
+            $email = input_data($_POST["email"]);  
+            // check that the e-mail address is well-formed  
+            if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {  
+                $emailErr = "Invalid email format";  
+            }  
+     }  
+    
+    //Number Validation  
+    if (emptyempty($_POST["mobileno"])) {  
+            $mobilenoErr = "Mobile no is required";  
+    } else {  
+            $mobileno = input_data($_POST["mobileno"]);  
+            // check if mobile no is well-formed  
+            if (!preg_match ("/^[0-9]*$/", $mobileno) ) {  
+            $mobilenoErr = "Only numeric value is allowed.";  
+            }  
+        //check mobile no length should not be less and greator than 10  
+        if (strlen ($mobileno) != 10) {  
+            $mobilenoErr = "Mobile no must contain 10 digits.";  
+            }  
+    }  
+      
+   
+      
+    //Empty Field Validation  
+    if (emptyempty ($_POST["gender"])) {  
+            $genderErr = "Gender is required";  
+    } else {  
+            $gender = input_data($_POST["gender"]);  
+    }  
+  
+   
+}  
+function input_data($data) {  
+  $data = trim($data);  
+  $data = stripslashes($data);  
+  $data = htmlspecialchars($data);  
+  return $data;  
+}  
+?>  
+  
+<h2>Registration Form</h2>  
+<span class = "error">* required field </span>  
+<br><br>  
+    <form id="myform" action="insertphp.php" method="post"></form>    
+   First Name:   
+    <input type="text" name="firstname">  
+    <span class="error">* <?php echo $nameErr; ?> </span>  
+    <br><br> 
+    Lasts Name:   
+    <input type="text" name="lastname">  
+    <span class="error">* <?php echo $lnameErr; ?> </span>  
+    <br><br> 	
+    E-mail:   
+    <input type="text" name="email">  
+    <span class="error">* <?php echo $emailErr; ?> </span>  
+    <br><br>  
+    Date of Birth:   
+    <input type="text" name="DateofBirth">  
+    <span class="error">* <?php echo $dob; ?> </span>  
+    <br><br>  
+    Mobile:   
+    <input type="text" name="Mobile">  
+    <span class="error"><?php echo $mobilenoErr; ?> </span>  
+    <br><br> 
+     	Designation:   
+    <input type="text" name="Designation">  
+    <span class="error"><?php echo $Designation; ?> </span>  
+    <br><br> 
+     	
+    Gender:  
+    <input type="radio" name="gender" value="male"> Male  
+    <input type="radio" name="gender" value="female"> Female   
+    <span class="error">* <?php echo $genderErr; ?> </span>  
+    <br><br>  
+      <div class="form-group">
+ <label>Hobbies:</label>
+ <input type="checkbox" id="singing" name="Hobbies1" value="Hobbies">
+  <label for="vehicle1">singing </label><br>
+  <input type="checkbox" id="dancing" name="Hobbies2" value="Hobbies">
+  <label for="vehicle2">dancing</label><br>
+  <input type="checkbox" id="cooking" name="Hobbies3" value="Hobbies">
+  <label for="vehicle3"> cooking</label><br>
+  <input type="checkbox" id="travelling" name="Hobbies4" value="Hobbies">
+  <label for="vehicle3"> travelling</label><br><br>
+                           
+    <input type="submit" name="submit" value="Submit">   
+    <br><br>                             
+</form>  
+
+
+<script type="text/javascript">
+	$(document).ready(function(){
+	var form=  $('#myform');
+	$('#submit').click(function(){
+	 $.ajax({
+	   url: form.attr("action"),
+	   type:'post',
+	   data: $("#myform input").serialize(),
+	   success: function(data){
+	   console.log(data); 
+	   }
+	});  
+	});
+ 	});
+  
+<?php  
+    if(isset($_POST['submit'])) {  
+    if($nameErr == "" && $lnameErr == "" && $emailErr == "" &&  $$dob == "" && $mobilenoErr == "" &&  $Designation == "" && $genderErr ==  "") {  
+        
+    } 
+} 
+?>  
+  
+</body>  
+</html>  
